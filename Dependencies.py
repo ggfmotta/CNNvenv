@@ -2,13 +2,13 @@
 from tensorflow.examples.tutorials.mnist import input_data
 
 import tensorflow as tf
-from tensorflow.python.keras.models import Sequential
-from tensorflow.python.keras.layers import Dense, Dropout, Activation, Flatten, Conv2D, MaxPooling2D
-from tensorflow.python.keras.callbacks import TensorBoard, ModelCheckpoint
-import tensorflow.python.keras.backend as K
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense, Dropout, Activation, Flatten, Conv2D, MaxPooling2D
+from tensorflow.keras.callbacks import TensorBoard, ModelCheckpoint
+import tensorflow.keras.backend as K
 from sklearn.model_selection import train_test_split
 from sklearn.model_selection import KFold
-from tensorflow.python.keras.optimizers import Adam
+from tensorflow.keras.optimizers import Adam
 import joblib
 
 # External Library Dependencies

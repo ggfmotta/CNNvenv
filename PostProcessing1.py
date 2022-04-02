@@ -24,7 +24,7 @@ for i in range(0, rows):
         else:
             model_top = 'Topology '+ str(j+3)
         # read csv
-        TopologyFilename = './Topologies/'+caseID+'_'+model_top+'.csv'
+        TopologyFilename = './vCNN/Topologies/'+caseID+'_'+model_top+'.csv'
         if os.path.exists(TopologyFilename):
             # convert csv to df
             TopologyDataframe = pd.read_csv(TopologyFilename,sep=';')
@@ -37,7 +37,7 @@ for i in range(0, rows):
             mean = np.mean(TopologyDataframe['Error (%)'])
             std = np.std(TopologyDataframe['Error (%)'])
             max = np.max(TopologyDataframe['Error (%)'])
-            f = open('./Topologies/Topologies_Data.txt',mode)
+            f = open('./vCNN/Topologies/Topologies_Data.txt',mode)
             f.write('Batch: %s\t' % caseID)
             f.write('Topology: %s\t' % model_top)
             f.write('Mean_error: %.3g\t' % mean)
@@ -47,6 +47,7 @@ for i in range(0, rows):
 
             # data visualization
             ax[i, j].set(title=model_top,
+                        xlim = [1,1.2], ylim = [0.9,1.2],
                         xlabel='Theoretical Permeability (-)',
                         ylabel='Estimated Permeability (-)')
             ax[i, j].scatter(TopologyDataframe['Keq/Kpm_teo'],
@@ -54,7 +55,7 @@ for i in range(0, rows):
             ax[i, j].plot(TopologyDataframe['Keq/Kpm_teo'],
                           TopologyDataframe['Keq/Kpm_teo'], color='navy', linewidth=2.0)
             fig1.suptitle(caseID+' Topologies')
-            fig1.savefig('./Topologies/'+caseID+'_Topologies.png')
+            fig1.savefig('./vCNN/Topologies/'+caseID+'_Topologies.png')
         else:
             break
 
@@ -68,17 +69,22 @@ for i in range(0, rows):
         else:
             model_top = 'Topology '+ str(j+3)
         # read csv
-        TopologyFilename = './Topologies/'+caseID+'_'+model_top+'.csv'
+        TopologyFilename = './vCNN/Topologies/'+caseID+'_'+model_top+'.csv'
         if os.path.exists(TopologyFilename):
             # convert csv to df
             TopologyDataframe = pd.read_csv(TopologyFilename,sep=';')
 
             # data visualization
-            ax2[i, j].set(title=model_top,
-                        xlabel='Prediction Error (%)',
+            ax2[i, j].set(title=model_top, 
+                        xlim = [-0.06,0.06],
+                        xlabel='Error (-)',
                         ylabel='Density')
-            ax2[i, j] = sns.distplot(np.array(TopologyDataframe['Error (%)']), color = 'm', ax=ax2[i, j])
-            fig2.suptitle(caseID+' Topologies Distributions')
-            fig2.savefig('./Topologies/'+caseID+'_Distribution.png')
+            ax2[i, j] = sns.histplot(np.array(TopologyDataframe['Keq/Kpm_teo'])-np.array(TopologyDataframe['Keq/Kpm_est']),
+                                        color = 'm',
+                                        stat="density", common_norm=False, kde = True,
+                                        ax=ax2[i, j],
+                                        )
+            fig2.suptitle(caseID+' Topologies Histograms')
+            fig2.savefig('./vCNN/Topologies/'+caseID+'_Distribution.png')
         else:
             break

@@ -178,7 +178,7 @@ def create_NN_data(ImDIR,imFiles,Target,Extra=[],imgSize=200,fileExtension='.tif
     return X, y, Info
 
 # Saving Paths
-checkpoint_path = './Model/'+modelName+'.ckpt'
+checkpoint_path = './vCNN/Model/'+modelName+'.ckpt'
 checkpoint_dir = os.path.dirname(checkpoint_path)
 
 # Callback definitions
