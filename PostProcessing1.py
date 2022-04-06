@@ -46,7 +46,7 @@ for i in range(0, rows):
             # data visualization
             ax[i,j].set_title(label = model_top, fontsize = 10)
             ax[i, j].scatter(TopologyDataframe['Keq/Kpm_teo'],
-                            TopologyDataframe['Keq/Kpm_est'], color='royalblue', marker='.')
+                            TopologyDataframe['Keq/Kpm_est'], color='royalblue', marker='.', label = 'Train Data')
             ax[i, j].plot(TopologyDataframe['Keq/Kpm_teo'],
                           TopologyDataframe['Keq/Kpm_teo'], color='navy', linewidth=2.0)
         else:
@@ -67,12 +67,13 @@ for i in range(0, rows):
             f = open('./vCNN/Topologies/Train/Topologies_Data.txt',mode)
             f.write('Batch: %s\t' % caseID)
             f.write('Topology: %s\t' % model_top)
-            f.write('Mean_error: %.3g\t' % mean)
-            f.write('Max_error: %.3g\t' % max)
-            f.write('Standard Deviation: %.3g\n' % std)
+            f.write('Mean_error: %.4g\t' % mean)
+            f.write('Max_error: %.4g\t' % max)
+            f.write('Standard Deviation: %.4g\n' % std)
             f.close()
             ax[i, j].scatter(TestTopologyDataframe['Keq/Kpm_teo'],
-                            TestTopologyDataframe['Keq/Kpm_est'], color='red', marker='x')
+                            TestTopologyDataframe['Keq/Kpm_est'], color='firebrick', marker='x', label = 'Test Data')
+            ax[i,j].legend(loc = "lower right", fontsize = 6.5)
 fig1.text(0.5, 0.025, 'Theoretical Perm. (-)', ha = 'center', fontsize = 10)
 fig1.text(0.025, 0.5, 'Estimated Perm. (-)', va = 'center', rotation = 'vertical', fontsize = 10)
 fig1.suptitle(caseID+' Topologies')
@@ -104,5 +105,5 @@ for i in range(0, rows):
             break
 fig2.text(0.5, 0.025, 'Error (-)', ha = 'center', fontsize = 10)
 fig2.text(0.025, 0.5, 'Density', va = 'center', rotation = 'vertical', fontsize = 10)
-fig2.suptitle(caseID+' Topologies Test Histograms')
+fig2.suptitle(caseID+' Topologies Test Data Normal Distribution')
 fig2.savefig('./vCNN/Topologies/'+caseID+'_Distribution.png')

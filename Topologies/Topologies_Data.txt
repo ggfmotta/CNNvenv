@@ -1,1 +1,0 @@
-Batch: Am5_c12	Topology: Topology 2	Mean_error: 1.13	Max_error: 40.4	Standard Deviation: 12.6
