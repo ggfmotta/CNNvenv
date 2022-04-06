@@ -126,29 +126,40 @@ model = ModelTopology(X)
 model_top = 'Topology '+ topologyName
 whole_time = time.time()
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.15)
-model.fit(x = X_train,y = y_train, batch_size = 10, epochs = 20, validation_split = 0.15, callbacks = [tensorboard,cp_callback])
+model.fit(x = X_train,y = y_train, batch_size = 50, epochs = 2, validation_split = 0.15, callbacks = [tensorboard,cp_callback])
 
-# predict
-y_Predicted = model.predict(x = X_test)
+# predict train
+y_trainPred = model.predict(x = X_train)
+# predict test
+y_testPred = model.predict(x = X_test)
 end_time = time.time() - whole_time
+
+# Check Train Results
+TrainDataframe = pd.DataFrame(columns=['Keq/Kpm_teo','Keq/Kpm_est','Error (%)'])
+TrainDataframe['Keq/Kpm_teo'] = y_train
+TrainDataframe['Keq/Kpm_est'] = y_trainPred
+TrainDataframe['Error (%)'] = 100*abs(TrainDataframe['Keq/Kpm_est']-TrainDataframe['Keq/Kpm_teo'])/TrainDataframe['Keq/Kpm_teo']
+# Export to csv
+TrainDataframe.to_csv('./vCNN/Topologies/Train/'+caseID+'_'+model_top+'.csv',sep=';')
 
 # Check Test Results
 TopologyDataframe = pd.DataFrame(columns=['Keq/Kpm_teo','Keq/Kpm_est','Error (%)'])
 TopologyDataframe['Keq/Kpm_teo'] = y_test
-TopologyDataframe['Keq/Kpm_est'] = y_Predicted
+TopologyDataframe['Keq/Kpm_est'] = y_testPred
 TopologyDataframe['Error (%)'] = 100*abs(TopologyDataframe['Keq/Kpm_est']-TopologyDataframe['Keq/Kpm_teo'])/TopologyDataframe['Keq/Kpm_teo']
-
 # Export to csv
-TopologyDataframe.to_csv('./vCNN//Topologies/'+caseID+'_'+model_top+'.csv',sep=';')
+TopologyDataframe.to_csv('./vCNN/Topologies/Test/'+caseID+'_'+model_top+'.csv',sep=';')
 
 print(' ')
 print('Case Topology: %s' % model_top)
 print('Case Batch: %s' % caseID)
 print("Total time = %g [s]\n" % end_time)
 
-# print('')
-# for i in range(0,len(y_Predicted)):
-#     print('{:.4f} , {:.4f} , {:.2f}, {:.2f}%'.format(\
-#         y_Predicted[i][0],y_test[i],100*np.abs(y_Predicted[i][0]-y_test[i])/max(y_test),100*np.abs(y_Predicted[i][0]-y_test[i])/y_test[i]))
+'''
+print('')
+for i in range(0,len(y_Predicted)):
+    print('{:.4f} , {:.4f} , {:.2f}, {:.2f}%'.format(\
+        y_Predicted[i][0],y_test[i],100*np.abs(y_Predicted[i][0]-y_test[i])/max(y_test),100*np.abs(y_Predicted[i][0]-y_test[i])/y_test[i]))
 
-# model_eval = "print('Model evaluation ',model.evaluate(X_test,y_test)) > ./Results/" + caseId +".txt"
+model_eval = "print('Model evaluation ',model.evaluate(X_test,y_test)) > ./Results/" + caseId +".txt"
+'''

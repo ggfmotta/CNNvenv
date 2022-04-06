@@ -182,7 +182,7 @@ checkpoint_path = './vCNN/Model/'+modelName+'.ckpt'
 checkpoint_dir = os.path.dirname(checkpoint_path)
 
 # Callback definitions
-log_dir = 'logs/{}'.format(modelName) # Linux
+log_dir = './vCNN/logs/{}'.format(modelName) # Linux
 #log_dir = os.path.join('logs',format(modelName),'') # Windows
 tensorboard = TensorBoard(log_dir)
 cp_callback = ModelCheckpoint(checkpoint_path,save_weights_on=True,verbose=1)
