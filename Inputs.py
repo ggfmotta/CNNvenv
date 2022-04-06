@@ -11,5 +11,5 @@ imgSize=300
 # model name configuration
 batchName = '5'
 threshName = '_12_'
-topologyName = '1'
+topologyName = '2'
 modelName = "CNNPerm_"+batchName+threshName+topologyName
