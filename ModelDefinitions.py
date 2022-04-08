@@ -19,21 +19,21 @@ def ModelTopology(XInput):
     model = Sequential()
 
     # Layer 1: Covolutional Layer
-    model.add(Conv2D(256,(5,5),input_shape = XInput.shape[1:]))
+    model.add(Conv2D(256,(7,7),input_shape = XInput.shape[1:]))
     model.add(Activation("relu"))
 
     # Layer 2: MaxPooling
     model.add(MaxPooling2D(pool_size = (2,2)))
 
     # Layer 3: Covolutional Layer
-    model.add(Conv2D(128, (3,3)))
+    model.add(Conv2D(128, (5,5)))
     model.add(Activation("relu"))
 
     # Layer 4: MaxPooling
     model.add(MaxPooling2D(pool_size = (2,2)))
 
     # Layer 5: Covolutional Layer
-    model.add(Conv2D(64, (3,3)))
+    model.add(Conv2D(64, (5,5)))
     model.add(Activation("relu"))
 
     # Layer 6: MaxPooling
