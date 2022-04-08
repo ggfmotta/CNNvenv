@@ -4,6 +4,7 @@ from turtle import color
 from matplotlib import markers
 import pandas as pd
 import matplotlib.pyplot as plt
+import matplotlib.ticker as ticker
 import numpy as np
 import seaborn as sns
 import os
@@ -95,12 +96,13 @@ for i in range(0, rows):
             TopologyDataframe = pd.read_csv(TopologyFilename,sep=';')
             # data visualization
             ax2[i,j].set_title(label = model_top, fontsize = 10)
-            ax2[i, j] = sns.histplot(np.array(TopologyDataframe['Keq/Kpm_teo'])-np.array(TopologyDataframe['Keq/Kpm_est']),
+            ax2[i, j] = sns.histplot(np.array(TopologyDataframe['Keq/Kpm_est'])-np.array(TopologyDataframe['Keq/Kpm_teo']),
                                         color = 'm',
                                         stat = "density", common_norm=False, kde = True,
                                         ax = ax2[i, j],
                                         )
-            ax2[i,j].set_ylabel(ylabel = " ")            
+            ax2[i,j].set_ylabel(ylabel = " ")
+            ax2[i,j].xaxis.set_major_formatter(ticker.FormatStrFormatter('%.2f'))        
         else:
             break
 fig2.text(0.5, 0.025, 'Error (-)', ha = 'center', fontsize = 10)
