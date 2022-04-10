@@ -3,6 +3,9 @@
 *.zip
 Images/
 Results/
+./logs/
+./Model/
+./Topologies/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
