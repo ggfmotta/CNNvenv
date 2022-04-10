@@ -5,7 +5,8 @@ Images/
 Results/
 logs/
 Model/
-Topologies/
+Topologies/Test
+Topologies/Train
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
