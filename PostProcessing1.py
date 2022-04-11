@@ -14,7 +14,7 @@ rows = 2
 cols = 3
 
 # set data plot
-fig1, ax = plt.subplots(rows, cols, sharex=False, sharey=True)
+fig1, ax = plt.subplots(rows, cols, sharex=False, sharey=False)
 for i in range(0, rows):
     for j in range(0, cols):
         # Read from CSV of Model Topology
@@ -75,13 +75,14 @@ for i in range(0, rows):
             ax[i, j].scatter(TestTopologyDataframe['Keq/Kpm_teo'],
                             TestTopologyDataframe['Keq/Kpm_est'], color='firebrick', marker='x', label = 'Test Data')
             ax[i,j].legend(loc = "lower right", fontsize = 6.5)
+fig1.subplots_adjust(left=None, bottom=None, right=None, top=None, wspace=0.4, hspace=0.3)
 fig1.text(0.5, 0.025, 'Theoretical Perm. (-)', ha = 'center', fontsize = 10)
 fig1.text(0.025, 0.5, 'Estimated Perm. (-)', va = 'center', rotation = 'vertical', fontsize = 10)
 fig1.suptitle(caseID+' Topologies')
 fig1.savefig('./vCNN/Topologies/'+caseID+'_Topologies.png')
         
 # set data distribution
-fig2, ax2 = plt.subplots(rows, cols, sharex=False, sharey=True)
+fig2, ax2 = plt.subplots(rows, cols, sharex=False, sharey=False)
 for i in range(0, rows):
     for j in range(0, cols):
         # define Topology
@@ -105,6 +106,7 @@ for i in range(0, rows):
             ax2[i,j].xaxis.set_major_formatter(ticker.FormatStrFormatter('%.2f'))        
         else:
             break
+fig2.subplots_adjust(left=None, bottom=None, right=None, top=None, wspace=0.4, hspace=0.3)
 fig2.text(0.5, 0.025, 'Error (-)', ha = 'center', fontsize = 10)
 fig2.text(0.025, 0.5, 'Density', va = 'center', rotation = 'vertical', fontsize = 10)
 fig2.suptitle(caseID+' Topologies Test Data Normal Distribution')

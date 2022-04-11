@@ -48,11 +48,11 @@ am8_c12x = [s for s in am8_c12 if "_x" in s]
 am8_c12y = [s for s in am8_c12 if "_y" in s]
 
 # change subset and change Model Configurations in Inputs.py
-subset = am5_c12
-caseID = 'Am5_c12'
+subset = am8_c34
+caseID = 'Am8_c34'
 #caseId = 'Train_ValSplit_15_'+caseID+'_Test_Same_TestGroupEval'
 
-imFiles, Porous, Perms, PMPerms = read_perm_data("Data/AMs_data.csv",delimiter=",", imlist = am5_c12)
+imFiles, Porous, Perms, PMPerms = read_perm_data("Data/AMs_data.csv",delimiter=",", imlist = subset)
 # Using Pandas Dataframes
 Dataframe = pd.read_csv("Data/AMs_data.csv",sep=',')
 
@@ -126,7 +126,7 @@ model = ModelTopology(X)
 model_top = 'Topology '+ topologyName
 whole_time = time.time()
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.15)
-model.fit(x = X_train,y = y_train, batch_size = 50, epochs = 20, validation_split = 0.15, callbacks = [tensorboard,cp_callback])
+model.fit(x = X_train,y = y_train, batch_size = 10, epochs = 20, validation_split = 0.15, callbacks = [tensorboard,cp_callback])
 
 # predict train
 y_trainPred = model.predict(x = X_train)
