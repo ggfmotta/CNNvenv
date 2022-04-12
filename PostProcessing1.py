@@ -106,13 +106,13 @@ for i in range(0, rows):
             TopologyDataframe = pd.read_csv(TopologyFilename,sep=';')
             # data visualization
             ax2[i,j].set_title(label = model_top, fontsize = 12)
-            ax2[i,j] = sns.histplot(np.array(TopologyDataframe['Keq/Kpm_est'])-np.array(TopologyDataframe['Keq/Kpm_teo']),
+            ax2[i,j] = sns.histplot(100*(np.array(TopologyDataframe['Keq/Kpm_est'])-np.array(TopologyDataframe['Keq/Kpm_teo']))/np.array(TopologyDataframe['Keq/Kpm_teo']),
                                         color = 'm',
                                         stat = "count", common_norm=False, kde = True,
                                         ax = ax2[i, j])
             ax2[i,j].set_ylabel(ylabel = "Count", fontsize = 10)
             ax2[i,j].set_xlabel(xlabel = 'Error (%)', fontsize = 10)
-            ax2[i,j].xaxis.set_major_formatter(ticker.FormatStrFormatter('%.2f'))
+            ax2[i,j].xaxis.set_major_formatter(ticker.FormatStrFormatter('%.1f'))
                   
         else:
             break
