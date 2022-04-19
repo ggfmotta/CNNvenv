@@ -139,11 +139,11 @@ for i in range(0, rows):
             TopologyDataframe = pd.read_csv(TopologyFilename,sep=';')
             # data visualization
             ax3[i, j].set_title(label = model_top, fontsize = 12)
-            ax3[i,j] = sns.scatterplot(x = TopologyDataframe['Keq/Kpm_est'], y = TopologyDataframe['Error (%)'], 
+            ax3[i,j] = sns.scatterplot(x = TopologyDataframe['Keq/Kpm_teo'], y = TopologyDataframe['Error (%)'], 
                                         color = 'lightsalmon',
                                         ax = ax3[i,j])
             ax3[i, j].axhline(y = TopologyDataframe['Error (%)'].mean(), color = 'orangered', linestyle = '--', label = 'Média')
-            ax3[i, j].set_xlabel(xlabel = 'Estimated Perm. (-)', fontsize = 10)
+            ax3[i, j].set_xlabel(xlabel = 'Theoretical Perm. (-)', fontsize = 10)
             ax3[i, j].set_ylabel(ylabel = 'Error (%)', fontsize = 10)
             ax3[i, j].xaxis.set_major_formatter(ticker.FormatStrFormatter('%.2f'))
             ax3[i, j].yaxis.set_major_formatter(ticker.FormatStrFormatter('%.1f'))
@@ -155,7 +155,7 @@ for i in range(0, rows):
 #fig3.text(0.025, 0.5, 'Density', va = 'center', rotation = 'vertical', fontsize = 12)
 #fig3.suptitle(caseID+' Topologies Prediction Distribution', fontsize = 18)
 fig3.tight_layout()
-fig3.savefig('./vCNN/Topologies/ErrorPerKeq.png')
+fig3.savefig('./vCNN/Topologies/'+caseID+'_ErrorPerKeq.png')
 
 # switch batch and subsets
 groups = ['Am5_c34', 'Am8_c12', 'Am8_c34'] # remaining groups
