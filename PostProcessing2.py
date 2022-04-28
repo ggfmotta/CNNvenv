@@ -6,7 +6,26 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 import os
+from Inputs import *
 
+# read History csv
+HistoryFilename = './vCNN/History/'+modelName+'_Hist.csv'
+if os.path.exists(HistoryFilename):
+        # convert csv to df
+        HistoryDataframe = pd.read_csv(HistoryFilename,sep=',')
+
+# data visualization
+fig, ax = plt.subplots(nrows = 1, ncols = 2, sharex=False, sharey=False, figsize = (10,6))
+ax[0].set_title('Mean Square Error - Loss Function', fontsize = 10)
+ax[0].plot(HistoryDataframe['loss'])
+ax[0].set_xlabel(xlabel = 'Epochs', fontsize = 10)
+ax[1].set_title('Mean Error (%)', fontsize = 10)
+ax[1].plot(HistoryDataframe['mean_Error'])
+ax[1].set_xlabel(xlabel = 'Epochs', fontsize = 10)
+fig.tight_layout()
+fig.savefig('./vCNN/Topologies/Next/'+modelName+'.png')
+
+'''
 # Read from CSV of results
 originalFilename = './Data/AMs_data.csv'
 # resulfsFilename = './Results/Train_Am5_c123_Area0-20_Test_Same_TestGroupEval.csv'
@@ -69,7 +88,7 @@ plt.title(caseID+' w/ '+subsetID+' subset', fontsize=20)
 plt.savefig('./Results/Train_'+caseID+'_Test_'+subsetID+' subset.png')
 
 
-'''
+
 fig2, ax = plt.subplots(1, 2)#, gridspec_kw={"width_ratios":[1,1, 0.05]})
 h0 = ax[0].hist2d(trainingArea, trainingPerm, bins=(20, 20), cmap=plt.cm.jet)
 ax[0].set(title = 'Training Set',

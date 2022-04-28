@@ -83,10 +83,6 @@ for i in range(0, rows):
                             TestTopologyDataframe['Keq/Kpm_est'], 
                             color='lightgreen', marker='x', label = 'Test Data')
             ax[i, j].legend(loc = "best", fontsize = 8)
-#fig1.subplots_adjust(left=None, bottom=None, right=None, top=None, wspace=0.4, hspace=0.3)
-#fig1.text(0.5, 0.025, 'Theoretical Perm. (-)', ha = 'center', fontsize = 12)
-#fig1.text(0.025, 0.5, 'Estimated Perm. (-)', va = 'center', rotation = 'vertical', fontsize = 12)
-#fig1.suptitle(caseID+' Topologies Performance', fontsize = 18)
 fig1.tight_layout()
 fig1.savefig('./vCNN/Topologies/'+caseID+'_Topologies.png')
         
@@ -116,10 +112,6 @@ for i in range(0, rows):
                   
         else:
             break
-#fig2.subplots_adjust(left=None, bottom=None, right=None, top=None, wspace=0.4, hspace=0.3)
-#fig2.text(0.5, 0.025, 'Error (-)', ha = 'center', fontsize = 12)
-#fig2.text(0.025, 0.5, 'Density', va = 'center', rotation = 'vertical', fontsize = 12)
-#fig2.suptitle(caseID+' Topologies Prediction Distribution', fontsize = 18)
 fig2.tight_layout()
 fig2.savefig('./vCNN/Topologies/'+caseID+'_Distribution.png')
 
@@ -150,10 +142,6 @@ for i in range(0, rows):
             ax3[i, j].legend(loc = "best", fontsize = 8)
         else:
             break
-#fig3.subplots_adjust(left=None, bottom=None, right=None, top=None, wspace=0.4, hspace=0.3)
-#fig3.text(0.5, 0.025, 'Error (-)', ha = 'center', fontsize = 12)
-#fig3.text(0.025, 0.5, 'Density', va = 'center', rotation = 'vertical', fontsize = 12)
-#fig3.suptitle(caseID+' Topologies Prediction Distribution', fontsize = 18)
 fig3.tight_layout()
 fig3.savefig('./vCNN/Topologies/'+caseID+'_ErrorPerKeq.png')
 
@@ -215,9 +203,5 @@ for i in range(0, len(groups)):
         ax4[i].legend(loc = "best", fontsize = 12)
         ax4[i].set_xlabel('Theoretical Perm. (-)', fontsize = 14)
         ax4[i].set_ylabel('Estimated Perm. (-)', fontsize = 14)
-#fig4.subplots_adjust(left=None, bottom=None, right=None, top=None, wspace=0.4, hspace=None)
-#fig4.text(0.5, 0.025, 'Theoretical Perm. (-)', ha = 'center', fontsize = 10)
-#fig4.text(0.025, 0.5, 'Estimated Perm. (-)', va = 'center', rotation = 'vertical', fontsize = 10)
-#fig4.suptitle('Results of Topology 2 Performance for Remaining Groups', fontsize = 18)
 fig4.tight_layout()
 fig4.savefig('./vCNN/Topologies/Topology 2_Results.png')

@@ -55,6 +55,8 @@ def ModelTopology(XInput):
 
     # Model Compilation
     # mape = tf.keras.losses.MeanAbsolutePercentageError()
-    model.compile(loss = 'mse',optimizer = opt,metrics = [mean_Error])
+    model.compile(loss = 'mse', # lost function to minimize
+                optimizer = opt, # optmizer
+                metrics = [mean_Error]) # list of metrics to monitor
 
     return model

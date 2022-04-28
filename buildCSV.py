@@ -17,6 +17,6 @@ with open('./Data/AMs_data.csv', mode) as f:
     if mode == 'a':
         df.to_csv(f, header=False,index=False)
     else:
-        df.to_csv(f, index=False )
+        df.to_csv(f, index=False)
         
 # remember to manually remove empty rows in csv file

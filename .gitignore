@@ -3,6 +3,7 @@
 *.zip
 Images/
 Results/
+History/
 logs/
 Model/
 Topologies/Test
