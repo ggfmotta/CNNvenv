@@ -56,6 +56,8 @@ for i in range(0, rows):
                           TopologyDataframe['Keq/Kpm_teo'], color='indigo', linewidth=2.0)
             ax[i,j].set_ylabel(ylabel = 'Estimated Perm. (-)', fontsize = 10)
             ax[i,j].set_xlabel(xlabel = 'Theoretical Perm. (-)', fontsize = 10)
+            ax[i,j].set_xlim([1.00, 1.20])
+            ax[i,j].set_ylim([0.95, 1.20])
             ax[i,j].xaxis.set_major_formatter(ticker.FormatStrFormatter('%.2f'))
         else:
             break
@@ -83,6 +85,7 @@ for i in range(0, rows):
                             TestTopologyDataframe['Keq/Kpm_est'], 
                             color='lightgreen', marker='x', label = 'Test Data')
             ax[i, j].legend(loc = "best", fontsize = 8)
+            
 fig1.tight_layout()
 fig1.savefig('./vCNN/Topologies/'+caseID+'_Topologies.png')
         
@@ -101,15 +104,16 @@ for i in range(0, rows):
             # convert csv to df
             TopologyDataframe = pd.read_csv(TopologyFilename,sep=';')
             # data visualization
-            ax2[i,j].set_title(label = model_top, fontsize = 12)
+            ax2[i,j].set_title(label = model_top+' Distribution', fontsize = 12)
             ax2[i,j] = sns.histplot(100*(np.array(TopologyDataframe['Keq/Kpm_est'])-np.array(TopologyDataframe['Keq/Kpm_teo']))/np.array(TopologyDataframe['Keq/Kpm_teo']),
                                         color = 'm',
                                         stat = "count", common_norm=False, kde = True,
                                         ax = ax2[i, j])
             ax2[i,j].set_ylabel(ylabel = "Count", fontsize = 10)
             ax2[i,j].set_xlabel(xlabel = 'Error (%)', fontsize = 10)
+            ax2[i,j].set_xlim([-6.50, 6.50])
+            ax2[i,j].set_ylim([0.00, 115])
             ax2[i,j].xaxis.set_major_formatter(ticker.FormatStrFormatter('%.1f'))
-                  
         else:
             break
 fig2.tight_layout()
@@ -134,9 +138,11 @@ for i in range(0, rows):
             ax3[i,j] = sns.scatterplot(x = TopologyDataframe['Keq/Kpm_teo'], y = TopologyDataframe['Error (%)'], 
                                         color = 'lightsalmon',
                                         ax = ax3[i,j])
-            ax3[i, j].axhline(y = TopologyDataframe['Error (%)'].mean(), color = 'orangered', linestyle = '--', label = 'Média')
+            ax3[i, j].axhline(y = TopologyDataframe['Error (%)'].mean(), color = 'orangered', linestyle = '--', label = 'Mean')
             ax3[i, j].set_xlabel(xlabel = 'Theoretical Perm. (-)', fontsize = 10)
             ax3[i, j].set_ylabel(ylabel = 'Error (%)', fontsize = 10)
+            ax3[i,j].set_xlim([1.00, 1.20])
+            ax3[i,j].set_ylim([0.00, 6.00])
             ax3[i, j].xaxis.set_major_formatter(ticker.FormatStrFormatter('%.2f'))
             ax3[i, j].yaxis.set_major_formatter(ticker.FormatStrFormatter('%.1f'))
             ax3[i, j].legend(loc = "best", fontsize = 8)
