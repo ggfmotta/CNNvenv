@@ -126,7 +126,7 @@ model = ModelTopology(X)
 model_top = 'Topology '+ topologyName
 whole_time = time.time()
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.15)
-model.fit(x = X_train,y = y_train, batch_size = 10, epochs = 20, validation_split = 0.15, callbacks = [tensorboard,cp_callback])
+history = model.fit(x = X_train,y = y_train, batch_size = 10, epochs = 100, validation_split = 0.15, callbacks = [tensorboard,cp_callback])
 
 # predict train
 y_trainPred = model.predict(x = X_train)
@@ -149,6 +149,12 @@ TopologyDataframe['Keq/Kpm_est'] = y_testPred
 TopologyDataframe['Error (%)'] = 100*abs(TopologyDataframe['Keq/Kpm_est']-TopologyDataframe['Keq/Kpm_teo'])/TopologyDataframe['Keq/Kpm_teo']
 # Export to csv
 TopologyDataframe.to_csv('./vCNN/Topologies/Test/'+caseID+'_'+model_top+'.csv',sep=';')
+
+# Convert the history.history dict to a pandas DataFrame 
+hist_df = pd.DataFrame(history.history)
+# Save to csv
+with open('./vCNN/History/'+modelName+'_Hist.csv', mode='w') as f:
+    hist_df.to_csv(f, index=False)
 
 print(' ')
 print('Case Topology: %s' % model_top)
