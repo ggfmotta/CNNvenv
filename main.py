@@ -126,12 +126,20 @@ model = ModelTopology(X)
 model_top = 'Topology '+ topologyName
 whole_time = time.time()
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.15)
-history = model.fit(x = X_train,y = y_train, batch_size = 10, epochs = 100, validation_split = 0.15, callbacks = [tensorboard,cp_callback])
+X_test = np.array(X_test)
+y_test = np.array(y_test)
+X_train = np.array(X_train)
+y_train = np.array(y_train)
+# set early stopping
+es = EarlyStopping(monitor='loss', mode='min', verbose=1, patience=20)
+history = model.fit(x = X_train,y = y_train, batch_size = 10, epochs = 500, validation_split = 0.15, callbacks = [es,tensorboard,cp_callback])
 
 # predict train
 y_trainPred = model.predict(x = X_train)
+print('\nPredicted Train Data\n')
 # predict test
 y_testPred = model.predict(x = X_test)
+print('\nPredicted Test Data\n')
 end_time = time.time() - whole_time
 
 # Check Train Results

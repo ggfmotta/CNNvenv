@@ -12,5 +12,5 @@ imgSize=300
 batchName = '8'
 threshName = '_34_'
 topologyName = '2'
-topologySensitivity = 'a'
+topologySensitivity = 'b'
 modelName = "CNNPerm_"+batchName+threshName+topologyName+topologySensitivity

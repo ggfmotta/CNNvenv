@@ -1,17 +1,18 @@
 # Model Definitions
 
 # Inputs
+from sklearn import metrics
 from Inputs import *
 
 # Metrics
 def mean_Error(y_true, y_pred):
-    return K.mean(100*np.abs(y_pred-y_true)/y_true)
+    return K.mean(100*K.abs(y_pred-y_true)/y_true)
 
 def max_Error(y_true, y_pred):
-    return K.max(100*np.abs(y_pred-y_true)/y_true)
+    return K.max(100*K.abs(y_pred-y_true)/y_true)
 
 def accuracy(y_true, y_pred):
-    return 100*(1-K.max(np.abs(y_pred-y_true)/y_true))
+    return 100*(1-K.max(K.abs(y_pred-y_true)/y_true))
 
 def ModelTopology(XInput):
     # Nework Topology
