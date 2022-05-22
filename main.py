@@ -20,7 +20,7 @@ from PreProcessing import *
 
 
 # Read Images and CSV into CNN Inputs; Features and Labels
-all_files = os.listdir("Images")
+all_files = os.listdir("/home/gmotta/CNN/Images/")
 all_files_noExt = [s[0:len(s)-4] for s in all_files]
 
 am5 = [s for s in all_files if "am5_" in s]
@@ -48,8 +48,8 @@ am8_c12x = [s for s in am8_c12 if "_x" in s]
 am8_c12y = [s for s in am8_c12 if "_y" in s]
 
 # change subset and change Model Configurations in Inputs.py
-subset = am8_c34
-caseID = 'Am8_c34'
+subset = am5_c12
+caseID = 'Am5_c12'
 #caseId = 'Train_ValSplit_15_'+caseID+'_Test_Same_TestGroupEval'
 
 imFiles, Porous, Perms, PMPerms = read_perm_data("Data/AMs_data.csv",delimiter=",", imlist = subset)
@@ -78,7 +78,7 @@ Dataframe = Dataframe.reindex(np.random.permutation(Dataframe.index))
 # ResultDataframe = pd.DataFrame(Dataframe[~mask])
 
 # Define Test Data
-X,y,Info = create_NN_data('Images',\
+X,y,Info = create_NN_data("/home/gmotta/CNN/Images/",\
                         Dataframe.Image_file.values,\
                         Dataframe['Keq/Kpm'].values,\
                         Extra=Dataframe['%Area'].values/100,\
@@ -130,10 +130,21 @@ X_test = np.array(X_test)
 y_test = np.array(y_test)
 X_train = np.array(X_train)
 y_train = np.array(y_train)
-# set early stopping
-es = EarlyStopping(monitor='loss', mode='min', verbose=1, patience=20)
-history = model.fit(x = X_train,y = y_train, batch_size = 10, epochs = 500, validation_split = 0.15, callbacks = [es,tensorboard,cp_callback])
 
+print('\nTraining model\n')
+# set early stopping
+#es = EarlyStopping(monitor='loss', mode='min', verbose=1, patience=20)
+history = model.fit(x = X_train,y = y_train, batch_size = 10, epochs = 20, validation_split = 0.15)#, callbacks = [tensorboard])
+
+# Save model
+print('\nSaving model\n')
+save_path = '/home/gmotta/CNN/vCNN/SavedModels/'+modelName+'/'
+model.save(save_path+'model.h5')
+print('\nSaved model\n')
+
+# Save the weights
+#model.save_weights('/home/gmotta/CNN/vCNN/Model/Checkpoints/'+modelName+'/')
+'''
 # predict train
 y_trainPred = model.predict(x = X_train)
 print('\nPredicted Train Data\n')
@@ -157,23 +168,14 @@ TopologyDataframe['Keq/Kpm_est'] = y_testPred
 TopologyDataframe['Error (%)'] = 100*abs(TopologyDataframe['Keq/Kpm_est']-TopologyDataframe['Keq/Kpm_teo'])/TopologyDataframe['Keq/Kpm_teo']
 # Export to csv
 TopologyDataframe.to_csv('./vCNN/Topologies/Test/'+caseID+'_'+model_top+'.csv',sep=';')
-
+'''
 # Convert the history.history dict to a pandas DataFrame 
 hist_df = pd.DataFrame(history.history)
 # Save to csv
-with open('./vCNN/History/'+modelName+'_Hist.csv', mode='w') as f:
+with open('/home/gmotta/CNN/vCNN/History/'+modelName+'_Hist.csv', mode='w') as f:
     hist_df.to_csv(f, index=False)
 
 print(' ')
 print('Case Topology: %s' % model_top)
 print('Case Batch: %s' % caseID)
-print("Total time = %g [s]\n" % end_time)
-
-'''
-print('')
-for i in range(0,len(y_Predicted)):
-    print('{:.4f} , {:.4f} , {:.2f}, {:.2f}%'.format(\
-        y_Predicted[i][0],y_test[i],100*np.abs(y_Predicted[i][0]-y_test[i])/max(y_test),100*np.abs(y_Predicted[i][0]-y_test[i])/y_test[i]))
-
-model_eval = "print('Model evaluation ',model.evaluate(X_test,y_test)) > ./Results/" + caseId +".txt"
-'''
+#print("Total time = %g [s]\n" % end_time)

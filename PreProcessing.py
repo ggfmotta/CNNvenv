@@ -151,7 +151,8 @@ def create_NN_data(ImDIR,imFiles,Target,Extra=[],imgSize=200,fileExtension='.tif
     training_data = []
 
     for i in range(0,len(imFiles)):
-        imgArray = cv2.imread(os.path.join(ImDIR,imFiles[i]),cv2.IMREAD_GRAYSCALE)
+        #imgArray = cv2.imread(ImDIR+imFiles[i],cv2.IMREAD_GRAYSCALE) # Linux
+        imgArray = cv2.imread(os.path.join(ImDIR,imFiles[i]),cv2.IMREAD_GRAYSCALE) # Windows
         # plt.imshow(imgArray,cmap='gray')
         # plt.show()
         reducArray = cv2.resize(imgArray,(imgSize,imgSize))
@@ -178,11 +179,11 @@ def create_NN_data(ImDIR,imFiles,Target,Extra=[],imgSize=200,fileExtension='.tif
     return X, y, Info
 
 # Saving Paths
-checkpoint_path = './vCNN/Model/'+modelName+'.ckpt'
+checkpoint_path = '/home/gmotta/CNN/vCNN/Model/'+modelName+'.ckpt'
 checkpoint_dir = os.path.dirname(checkpoint_path)
 
 # Callback definitions
-log_dir = './vCNN/logs/{}'.format(modelName) # Linux
+log_dir = '/home/gmotta/CNN/vCNN/logs/{}'.format(modelName) # Linux
 #log_dir = os.path.join('logs',format(modelName),'') # Windows
 tensorboard = TensorBoard(log_dir)
 cp_callback = ModelCheckpoint(checkpoint_path,save_weights_on=True,verbose=1)

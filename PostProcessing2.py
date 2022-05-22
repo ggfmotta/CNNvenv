@@ -9,8 +9,9 @@ import os
 from Inputs import modelName, batchName, threshName, topologyName
 
 # read History csv
+lwidth = [4,2,1]
 sensitivity = ['','a','b']
-colors = ['black','lime','salmon']
+colors = ['blue','green','red']
 # data visualization
 fig1, ax1 = plt.subplots(nrows = 1, ncols = 2, sharex=False, sharey=False, figsize = (10,6))
 ax1[0].set_title('Mean Square Error - Loss Function', fontsize = 10)
@@ -29,12 +30,12 @@ for i in range(0,len(sensitivity)):
                         width = 1.0
 
                 ax1[0].plot(HistoryDataframe['loss'], label='Topology '+topologyName+sensitivity[i],
-                        color = colors[i], linestyle = '--', linewidth = 3.0)
+                        color = colors[i], linestyle = '-', linewidth = lwidth[i])
                 
                 ax1[0].legend(loc = "best", fontsize = 8)
                 
                 ax1[1].plot(HistoryDataframe['mean_Error'], label='Topology '+topologyName+sensitivity[i],
-                        color = colors[i], linestyle = '--', linewidth = 3.0)
+                        color = colors[i], linestyle = '-', linewidth = lwidth[i])
                 
                 ax1[1].legend(loc = "best", fontsize = 8)
         else:
@@ -48,7 +49,7 @@ fig2, ax2 = plt.subplots(nrows = 1, ncols = 1, sharex=False, sharey=False, figsi
 caseID = 'Am8_c34'
 model_top = 'Topology 2' # 2B
 # read test csv
-TopologyFilename = './vCNN/Topologies/Train/'+caseID+'_'+model_top+'.csv'
+TopologyFilename = './vCNN/Topologies/Train/'+caseID+'_'+model_top+'B.csv'
 if os.path.exists(TopologyFilename):
         # convert csv to df
         TopologyDataframe = pd.read_csv(TopologyFilename,sep=';')
@@ -76,7 +77,7 @@ if os.path.exists(TopologyFilename):
 else:
         pass
 # read test csv
-TestTopologyFilename = './vCNN/Topologies/Test/'+caseID+'_'+model_top+'.csv'
+TestTopologyFilename = './vCNN/Topologies/Test/'+caseID+'_'+model_top+'B.csv'
 if os.path.exists(TestTopologyFilename):
 # convert csv to df
         TestTopologyDataframe = pd.read_csv(TestTopologyFilename,sep=';')

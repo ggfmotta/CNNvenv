@@ -9,8 +9,8 @@ learning_rate = 0.000001
 imgSize=300
 
 # model name configuration
-batchName = '8'
-threshName = '_34_'
+batchName = '5'
+threshName = '_12_'
 topologyName = '2'
-topologySensitivity = 'b'
+topologySensitivity = ''
 modelName = "CNNPerm_"+batchName+threshName+topologyName+topologySensitivity
