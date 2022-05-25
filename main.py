@@ -3,22 +3,6 @@ from __future__ import division, print_function, absolute_import
 # Pre-Processing Routines
 from PreProcessing import *
 
-# (X_train, y_train), (X_test, y_test) = tf.keras.datasets.mnist.load_data()
-# input_shape = (28, 28, 1)
-
-# X_train = X_train.reshape(X_train.shape[0], 28, 28, 1)
-# X_test = X_test.reshape(X_test.shape[0], 28, 28, 1)
-
-# X_train = X_train.astype('float32')
-# X_test = X_test.astype('float32')
-
-# X_train /= 255
-# X_test /= 255
-
-# X = X_train # X = []
-# y = y_train # y = []
-
-
 # Read Images and CSV into CNN Inputs; Features and Labels
 all_files = os.listdir("/home/gmotta/CNN/Images/")
 all_files_noExt = [s[0:len(s)-4] for s in all_files]
@@ -50,11 +34,10 @@ am8_c12y = [s for s in am8_c12 if "_y" in s]
 # change subset and change Model Configurations in Inputs.py
 subset = am5_c12
 caseID = 'Am5_c12'
-#caseId = 'Train_ValSplit_15_'+caseID+'_Test_Same_TestGroupEval'
 
-imFiles, Porous, Perms, PMPerms = read_perm_data("Data/AMs_data.csv",delimiter=",", imlist = subset)
+imFiles, Porous, Perms, PMPerms = read_perm_data("/home/gmotta/CNN/Data/AMs_data.csv",delimiter=",", imlist = subset)
 # Using Pandas Dataframes
-Dataframe = pd.read_csv("Data/AMs_data.csv",sep=',')
+Dataframe = pd.read_csv("/home/gmotta/CNN/Data/AMs_data.csv",sep=',')
 
 # Drop entire rows with NA values
 Dataframe.dropna()
@@ -71,55 +54,15 @@ Dataframe['Image_file'] = Dataframe['Image_file'] + '.tif' #added
 Dataframe = Dataframe[Dataframe['Image_file'].isin(subset)]
 Dataframe = Dataframe.reindex(np.random.permutation(Dataframe.index))
 
-# mask = np.random.rand(len(Dataframe)) < 0.85
-
-# # Separate Training and Testing Sets from Dataframe
-# TrainingDataframe = pd.DataFrame(Dataframe[mask])
-# ResultDataframe = pd.DataFrame(Dataframe[~mask])
-
 # Define Test Data
 X,y,Info = create_NN_data("/home/gmotta/CNN/Images/",\
                         Dataframe.Image_file.values,\
                         Dataframe['Keq/Kpm'].values,\
                         Extra=Dataframe['%Area'].values/100,\
                         imgSize=imgSize)
-# X_train,y_train,Info_train = create_NN_data('Images',\
-#                                             TrainingDataframe.Image_file.values,\
-#                                             TrainingDataframe['Keq/Kpm'].values,\
-#                                             Extra=TrainingDataframe['%Area'].values/100,\
-#                                             imgSize=imgSize)
-
-# X_test,y_test,Info_test = create_NN_data('Images',\
-#                                             ResultDataframe.Image_file.values,\
-#                                             ResultDataframe['Keq/Kpm'].values,\
-#                                             Extra=ResultDataframe['%Area'].values/100,\
-#                                             imgSize=imgSize)
-
-# Save CNN Inputs: Features X
-# pickle_out = open('CNNInputs_X.pickle','wb')
-# pickle.dump(X,pickle_out)
-# pickle_out.close()
-
-# Save CNN Inputs: Labels y
-# pickle_out = open('CNNInputs_y.pickle','')
-# pickle.dump(y,pickle_out)
-# pickle_out.clo()
-
-# # Load CNN Inputs: Features X
-# pickle_in = open('CNNInputs_X.pickle','rb')
-# X = pickle.load(pickle_in)
-
-# # Load CNN Inputs: Labels y
-# pickle_in = open('CNNInputs_y.pickle','rb')
-# y = pickle.load(pickle_in)
 
 # Model Topology Definition
 model = ModelTopology(X)
-
-# Continue Training
-# modelName = 'CNNPerm+64x2_1573124911'
-# checkpoint_path = './Model/'+modelName+'.ckpt'
-# model.load_weights(checkpoint_path)
 
 # Train Model Topology
 # Regular Train
@@ -132,20 +75,16 @@ X_train = np.array(X_train)
 y_train = np.array(y_train)
 
 print('\nTraining model\n')
-# set early stopping
-#es = EarlyStopping(monitor='loss', mode='min', verbose=1, patience=20)
-history = model.fit(x = X_train,y = y_train, batch_size = 10, epochs = 20, validation_split = 0.15)#, callbacks = [tensorboard])
+history = model.fit(x = X_train,y = y_train, batch_size = 10, epochs = 20, validation_split = 0.15, callbacks = [checkpointer])
 
 # Save model
-print('\nSaving model\n')
-save_path = '/home/gmotta/CNN/vCNN/SavedModels/'+modelName+'/'
-model.save(save_path+'model.h5')
-print('\nSaved model\n')
+#print('\nSaving model\n')
+#save_path = '/home/gmotta/CNN/vCNN/SavedModels/'+modelName+'/'
+#model.save(save_path+'model.h5')
+#print('\nSaved model\n')
 
-# Save the weights
-#model.save_weights('/home/gmotta/CNN/vCNN/Model/Checkpoints/'+modelName+'/')
-'''
 # predict train
+print('\nPredicting...\n')
 y_trainPred = model.predict(x = X_train)
 print('\nPredicted Train Data\n')
 # predict test
@@ -159,7 +98,7 @@ TrainDataframe['Keq/Kpm_teo'] = y_train
 TrainDataframe['Keq/Kpm_est'] = y_trainPred
 TrainDataframe['Error (%)'] = 100*abs(TrainDataframe['Keq/Kpm_est']-TrainDataframe['Keq/Kpm_teo'])/TrainDataframe['Keq/Kpm_teo']
 # Export to csv
-TrainDataframe.to_csv('./vCNN/Topologies/Train/'+caseID+'_'+model_top+'.csv',sep=';')
+TrainDataframe.to_csv('./vCNN/Topologies/Next/Train/'+caseID+'_'+model_top+'.csv',sep=';')
 
 # Check Test Results
 TopologyDataframe = pd.DataFrame(columns=['Keq/Kpm_teo','Keq/Kpm_est','Error (%)'])
@@ -167,8 +106,8 @@ TopologyDataframe['Keq/Kpm_teo'] = y_test
 TopologyDataframe['Keq/Kpm_est'] = y_testPred
 TopologyDataframe['Error (%)'] = 100*abs(TopologyDataframe['Keq/Kpm_est']-TopologyDataframe['Keq/Kpm_teo'])/TopologyDataframe['Keq/Kpm_teo']
 # Export to csv
-TopologyDataframe.to_csv('./vCNN/Topologies/Test/'+caseID+'_'+model_top+'.csv',sep=';')
-'''
+TopologyDataframe.to_csv('./vCNN/Topologies/Next/Test/'+caseID+'_'+model_top+'.csv',sep=';')
+
 # Convert the history.history dict to a pandas DataFrame 
 hist_df = pd.DataFrame(history.history)
 # Save to csv
@@ -178,4 +117,4 @@ with open('/home/gmotta/CNN/vCNN/History/'+modelName+'_Hist.csv', mode='w') as f
 print(' ')
 print('Case Topology: %s' % model_top)
 print('Case Batch: %s' % caseID)
-#print("Total time = %g [s]\n" % end_time)
+print("Total time = %g [s]\n" % end_time)

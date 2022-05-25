@@ -179,11 +179,13 @@ def create_NN_data(ImDIR,imFiles,Target,Extra=[],imgSize=200,fileExtension='.tif
     return X, y, Info
 
 # Saving Paths
-checkpoint_path = '/home/gmotta/CNN/vCNN/Model/'+modelName+'.ckpt'
+checkpoint_path = '/home/gmotta/CNN/vCNN/SavedModels/'+modelName+'/cp.ckpt'
 checkpoint_dir = os.path.dirname(checkpoint_path)
 
 # Callback definitions
-log_dir = '/home/gmotta/CNN/vCNN/logs/{}'.format(modelName) # Linux
+save_path = '/home/gmotta/CNN/vCNN/SavedModels/'+modelName+'/'
+#log_dir = '/home/gmotta/CNN/vCNN/logs/{}'.format(modelName) # Linux
 #log_dir = os.path.join('logs',format(modelName),'') # Windows
-tensorboard = TensorBoard(log_dir)
-cp_callback = ModelCheckpoint(checkpoint_path,save_weights_on=True,verbose=1)
+es = EarlyStopping(monitor='loss', mode='min', verbose=1, patience=20)
+#tensorboard = TensorBoard(log_dir)
+checkpointer = ModelCheckpoint(filepath = save_path+'my_model.h5',save_best_only=True,verbose=1,monitor='val_loss',mode='min')
