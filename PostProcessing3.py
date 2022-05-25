@@ -6,7 +6,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 import os
-#from Inputs import modelName, batchName, threshName, topologyName
+from sklearn.model_selection import train_test_split
 
 # Read Images and CSV into CNN Inputs; Features and Labels
 all_files = os.listdir("/home/gmotta/CNN/Images/")
@@ -36,40 +36,50 @@ am8_c34 = [s for s in am8 if "c3" in s or "c4" in s]
 am8_c12x = [s for s in am8_c12 if "_x" in s]
 am8_c12y = [s for s in am8_c12 if "_y" in s]
 
-# define subset, X, y
-subset = am5_c12
-imFiles, Porous, Perms, PMPerms = read_perm_data("Data/AMs_data.csv",delimiter=",", imlist = subset)
+# Define subset
+subset = am5_c34
+
+# Prepare Data df
+imFiles, Porous, Perms, PMPerms = read_perm_data("/home/gmotta/CNN/Data/AMs_data.csv",delimiter=",", imlist = subset)
 Dataframe = pd.read_csv("/home/gmotta/CNN/Data/AMs_data.csv",sep=',')
 Dataframe.dropna()
+
+# List of Columns to Keep
+ColumnsToKeep = ['Image_file','Sample','Slice','%Area','Perim.','Keq/Kpm']
+
+# Drop entire Columns not in this list
+ListOfColumnsToDrop = [s for s in Dataframe.columns if s not in ColumnsToKeep]
+Dataframe.drop(ListOfColumnsToDrop,1,inplace=True)
+
 # Filter Subset of Images
 Dataframe['Image_file'] = Dataframe['Image_file'] + '.tif' #added
-
-list_size = len(subset)
-test_size = 0.85
-size = round(test_size*list_size)
-Xinfo = []
-Ytrue = []
-
-for i in range(0,size):
-    file = random.choice(subset)
-    Xinfo.append(file)
-
-Ytrue = Dataframe[Dataframe['Image_file'].isin(Xinfo)]['Keq/Kpm']
+Dataframe = Dataframe[Dataframe['Image_file'].isin(subset)]
+Dataframe = Dataframe.reindex(np.random.permutation(Dataframe.index))
 
 # Define Test Data
 X,y,Info = create_NN_data("/home/gmotta/CNN/Images/",\
-                        imFiles = Dataframe[Dataframe['Image_file'].isin(Xinfo)]['Image_file'].values,\
-                        Target = Dataframe[Dataframe['Image_file'].isin(Xinfo)]['Keq/Kpm'].values,\
-                        Extra=Dataframe['%Area'].values/100,\
-                        imgSize=imgSize)
+                        imFiles = Dataframe['Image_file'].values,\
+                        Target = Dataframe['Keq/Kpm'].values,\
+                        Extra = Dataframe['%Area'].values/100,\
+                        imgSize = imgSize)
+
+# Split subset data
+#test_size = 0.05
+#XDEL, Xinfo, YDEL, Ytrue = train_test_split(X,y,test_size=test_size)
+Xinfo = X
+Ytrue = y
 
 # Load Model
+print('\nLoading Model\n')
 modelName = 'CNNPerm_5_12_2'
 save_path = '/home/gmotta/CNN/vCNN/SavedModels/'+modelName+'/'
-model_latest = keras.models.load_model(save_path+'model.h5', compile = False)
+model_latest = keras.models.load_model(save_path+'my_model.h5', custom_objects={'mean_Error': mean_Error})
+model_latest.compile(optimizer='adam',loss='mse',metrics=mean_Error)
 print('\nLoaded Model\n')
 
-Ypred = model_latest.predict(x = X)
+# Predict
+print('\nPredicting...\n')
+Ypred = model_latest.predict(x = Xinfo)
 print('\nPredicted Test Data\n')
 
 # Check Test Results
@@ -79,18 +89,40 @@ TopologyDataframe['Keq/Kpm_est'] = Ypred
 TopologyDataframe['Error (%)'] = 100*abs(TopologyDataframe['Keq/Kpm_est']-TopologyDataframe['Keq/Kpm_teo'])/TopologyDataframe['Keq/Kpm_teo']
 print('\nChecked Results\n')
 
+# Export to csv
+base = 'AM5C12' # remind to update
+top = '_T2_'
+pred = 'AM5C34' # remind to update
+TopologyDataframe.to_csv('./vCNN/Topologies/Next/Pred/'+base+top+pred+'.csv',sep=';')
+
+# Export to txt
+path2txt = './vCNN/Topologies/Next/Pred/Topologies_Data.txt'
+mode = 'w'
+if os.path.exists(path2txt): mode = 'a'
+mean = np.mean(TopologyDataframe['Error (%)'])
+std = np.std(TopologyDataframe['Error (%)'])
+max = np.max(TopologyDataframe['Error (%)'])
+f = open(path2txt,mode)
+f.write('Base subset: %s\t' % base)
+f.write('Topology: %s\t' % top)
+f.write('Pred subset: %s\t' %pred)
+f.write('Mean_error: %.3g\t' % mean)
+f.write('Max_error: %.3g\t' % max)
+f.write('Standard Deviation: %.3g\n' % std)
+f.close()
+
+# Data Analysis
 fig, ax = plt.subplots(nrows = 1, ncols = 1, sharex=False, sharey=False, figsize = (8,6))
-ax.set_title('Topology 2 Prediction Test', fontsize = 12)
+ax.set_title(base+top+pred+' Prediction Test', fontsize = 12)
 ax.scatter(TopologyDataframe['Keq/Kpm_teo'],
-                    TopologyDataframe['Keq/Kpm_est'], color='lightgreen', marker='.', label = 'Test Data')
+                    TopologyDataframe['Keq/Kpm_est'], color='lightgreen', marker='x', label = 'Test Data')
 ax.plot(TopologyDataframe['Keq/Kpm_teo'],
                         TopologyDataframe['Keq/Kpm_teo'], color='indigo', linewidth=2.0)
 ax.legend(loc = "upper left", fontsize = 10)                        
 ax.set_ylabel(ylabel = 'Estimated Perm. (-)', fontsize = 10)
 ax.set_xlabel(xlabel = 'Theoretical Perm. (-)', fontsize = 10)
-ax.set_ylabel(ylabel = 'Estimated Perm. (-)', fontsize = 10)
-ax.set_xlabel(xlabel = 'Theoretical Perm. (-)', fontsize = 10)
+#ax.set_xlim([1.00, 2.0])
+#ax.set_ylim([1.00, 2.0])
 fig.tight_layout()
-fig.savefig('./vCNN/Topologies/Next/Pred/Am5_c12_Topology2_Am5_c34.png')
-
+fig.savefig('./vCNN/Topologies/Next/Pred/'+base+top+pred+'.png')
 print('\nEnd\n')
