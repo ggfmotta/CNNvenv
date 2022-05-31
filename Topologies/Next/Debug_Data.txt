@@ -1,2 +1,2 @@
-Batch: Am5_c12	Type: Train	Topology: Topology 2	Mean_error: 1	Max_error: 4.52	Standard Deviation: 0.711
-Batch: Am5_c12	Type: Test	Topology: Topology 2	Mean_error: 1.066	Max_error: 4.192	Standard Deviation: 0.7208
+Batch: Am5_c34	Type: Train	Topology: Topology 2a	Mean_error: 2.35	Max_error: 13.7	Standard Deviation: 1.96
+Batch: Am5_c34	Type: Test	Topology: Topology 2a	Mean_error: 2.541	Max_error: 58.11	Standard Deviation: 2.843

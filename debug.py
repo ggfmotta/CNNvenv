@@ -9,8 +9,8 @@ import os
 
 fig2, ax2 = plt.subplots(nrows = 1, ncols = 1, sharex=False, sharey=False, figsize = (8,6))
 # Read from CSV of Model Topology
-caseID = 'Am5_c12'
-model_top = 'Topology 2' # 2B
+caseID = 'Am5_c34'
+model_top = 'Topology 2a' # 2B
 # read test csv
 TopologyFilename = './vCNN/Topologies/Next/Train/'+caseID+'_'+model_top+'.csv'
 if os.path.exists(TopologyFilename):
@@ -62,4 +62,4 @@ if os.path.exists(TestTopologyFilename):
         ax2.legend(loc = "upper left", fontsize = 10)
             
 fig2.tight_layout()
-fig2.savefig('./vCNN/Topologies/Next/'+caseID+'_Topology 2.png')
+fig2.savefig('./vCNN/Topologies/Next/'+caseID+'_'+model_top+'.png')

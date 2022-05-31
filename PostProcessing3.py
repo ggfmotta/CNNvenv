@@ -37,7 +37,7 @@ am8_c12x = [s for s in am8_c12 if "_x" in s]
 am8_c12y = [s for s in am8_c12 if "_y" in s]
 
 # Define subset
-subset = am5_c34
+subset = am8_c12
 
 # Prepare Data df
 imFiles, Porous, Perms, PMPerms = read_perm_data("/home/gmotta/CNN/Data/AMs_data.csv",delimiter=",", imlist = subset)
@@ -64,14 +64,14 @@ X,y,Info = create_NN_data("/home/gmotta/CNN/Images/",\
                         imgSize = imgSize)
 
 # Split subset data
-#test_size = 0.05
-#XDEL, Xinfo, YDEL, Ytrue = train_test_split(X,y,test_size=test_size)
+test_size = 0.5
+XDEL, Xinfo, YDEL, Ytrue = train_test_split(X,y,test_size=test_size)
 Xinfo = X
 Ytrue = y
 
 # Load Model
 print('\nLoading Model\n')
-modelName = 'CNNPerm_5_12_2'
+modelName = 'CNNPerm_5_34_2a'
 save_path = '/home/gmotta/CNN/vCNN/SavedModels/'+modelName+'/'
 model_latest = keras.models.load_model(save_path+'my_model.h5', custom_objects={'mean_Error': mean_Error})
 model_latest.compile(optimizer='adam',loss='mse',metrics=mean_Error)
@@ -90,9 +90,9 @@ TopologyDataframe['Error (%)'] = 100*abs(TopologyDataframe['Keq/Kpm_est']-Topolo
 print('\nChecked Results\n')
 
 # Export to csv
-base = 'AM5C12' # remind to update
+base = 'AM5C34' # remind to update
 top = '_T2_'
-pred = 'AM5C34' # remind to update
+pred = 'AM8C12' # remind to update
 TopologyDataframe.to_csv('./vCNN/Topologies/Next/Pred/'+base+top+pred+'.csv',sep=';')
 
 # Export to txt
@@ -110,19 +110,3 @@ f.write('Mean_error: %.3g\t' % mean)
 f.write('Max_error: %.3g\t' % max)
 f.write('Standard Deviation: %.3g\n' % std)
 f.close()
-
-# Data Analysis
-fig, ax = plt.subplots(nrows = 1, ncols = 1, sharex=False, sharey=False, figsize = (8,6))
-ax.set_title(base+top+pred+' Prediction Test', fontsize = 12)
-ax.scatter(TopologyDataframe['Keq/Kpm_teo'],
-                    TopologyDataframe['Keq/Kpm_est'], color='lightgreen', marker='x', label = 'Test Data')
-ax.plot(TopologyDataframe['Keq/Kpm_teo'],
-                        TopologyDataframe['Keq/Kpm_teo'], color='indigo', linewidth=2.0)
-ax.legend(loc = "upper left", fontsize = 10)                        
-ax.set_ylabel(ylabel = 'Estimated Perm. (-)', fontsize = 10)
-ax.set_xlabel(xlabel = 'Theoretical Perm. (-)', fontsize = 10)
-#ax.set_xlim([1.00, 2.0])
-#ax.set_ylim([1.00, 2.0])
-fig.tight_layout()
-fig.savefig('./vCNN/Topologies/Next/Pred/'+base+top+pred+'.png')
-print('\nEnd\n')

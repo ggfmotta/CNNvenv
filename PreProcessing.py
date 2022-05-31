@@ -186,6 +186,6 @@ checkpoint_dir = os.path.dirname(checkpoint_path)
 save_path = '/home/gmotta/CNN/vCNN/SavedModels/'+modelName+'/'
 #log_dir = '/home/gmotta/CNN/vCNN/logs/{}'.format(modelName) # Linux
 #log_dir = os.path.join('logs',format(modelName),'') # Windows
-es = EarlyStopping(monitor='loss', mode='min', verbose=1, patience=20)
+es = EarlyStopping(monitor='val_loss',mode='min',verbose=1,patience=50)
 #tensorboard = TensorBoard(log_dir)
 checkpointer = ModelCheckpoint(filepath = save_path+'my_model.h5',save_best_only=True,verbose=1,monitor='val_loss',mode='min')
