@@ -1,0 +1,13 @@
+Batch: Am8_c34	Type: Train	Topology: Topology 2	Mean_error: 92	Max_error: 582	Standard Deviation: 88.6
+Batch: Am8_c34	Type: Test	Topology: Topology 2	Mean_error: 97.5	Max_error: 555.5	Standard Deviation: 93.89
+Batch: Am8_c34	Type: Train	Topology: Topology 2A	Mean_error: 92	Max_error: 582	Standard Deviation: 88.6
+Batch: Am8_c34	Type: Test	Topology: Topology 2A	Mean_error: 97.5	Max_error: 555.5	Standard Deviation: 93.89
+Batch: Am8_c34	Type: Train	Topology: Topology 2B	Mean_error: 15.2	Max_error: 216	Standard Deviation: 20.1
+Batch: Am8_c34	Type: Test	Topology: Topology 2B	Mean_error: 21.38	Max_error: 260.6	Standard Deviation: 28.48
+Batch: Am8_c34	Type: Train	Topology: Topology 2C	Mean_error: 17.7	Max_error: 406	Standard Deviation: 23.4
+Batch: Am8_c34	Type: Train	Topology: Topology 2c	Mean_error: 17.6	Max_error: 278	Standard Deviation: 23.2
+Batch: Am8_c34	Type: Test	Topology: Topology 2c	Mean_error: 17.62	Max_error: 278.3	Standard Deviation: 23.2
+Batch: Am8_c34	Type: Train	Topology: Topology 2c	Mean_error: 17.7	Max_error: 406	Standard Deviation: 23.5
+Batch: Am8_c34	Type: Test	Topology: Topology 2c	Mean_error: 17.62	Max_error: 278.3	Standard Deviation: 23.2
+Batch: Am8_c34	Type: Train	Topology: Topology 2c	Mean_error: 17.7	Max_error: 406	Standard Deviation: 23.5
+Batch: Am8_c34	Type: Test	Topology: Topology 2c	Mean_error: 17.62	Max_error: 278.3	Standard Deviation: 23.2

@@ -9,19 +9,19 @@ import os
 
 fig2, ax2 = plt.subplots(nrows = 1, ncols = 1, sharex=False, sharey=False, figsize = (8,6))
 # Read from CSV of Model Topology
-caseID = 'Am5_c34'
-model_top = 'Topology 2a' # 2B
+caseID = 'Am8_c34'
+model_top = 'Topology 2c' # 2B
 # read test csv
 TopologyFilename = './vCNN/Topologies/Next/Train/'+caseID+'_'+model_top+'.csv'
 if os.path.exists(TopologyFilename):
         # convert csv to df
         TopologyDataframe = pd.read_csv(TopologyFilename,sep=';')
         # export to txt
-        mode = 'w'
+        mode = 'a'
         mean = np.mean(TopologyDataframe['Error (%)'])
         std = np.std(TopologyDataframe['Error (%)'])
         max = np.max(TopologyDataframe['Error (%)'])
-        f = open('./vCNN/Topologies/Next/Debug_Data.txt',mode)
+        f = open('./vCNN/Topologies/Debug_Data.txt',mode)
         f.write('Batch: %s\t' % caseID)
         f.write('Type: Train\t')
         f.write('Topology: %s\t' % model_top)
@@ -39,6 +39,7 @@ if os.path.exists(TopologyFilename):
         ax2.set_xlabel(xlabel = 'Theoretical Perm. (-)', fontsize = 10)
 else:
         pass
+
 # read test csv
 TestTopologyFilename = './vCNN/Topologies/Next/Test/'+caseID+'_'+model_top+'.csv'
 if os.path.exists(TestTopologyFilename):
@@ -48,7 +49,7 @@ if os.path.exists(TestTopologyFilename):
         std = np.std(TestTopologyDataframe['Error (%)'])
         max = np.max(TestTopologyDataframe['Error (%)'])
         mode = 'a'
-        f = open('./vCNN/Topologies/Next/Debug_Data.txt',mode)
+        f = open('./vCNN/Topologies/Debug_Data.txt',mode)
         f.write('Batch: %s\t' % caseID)
         f.write('Type: Test\t')
         f.write('Topology: %s\t' % model_top)
@@ -62,4 +63,4 @@ if os.path.exists(TestTopologyFilename):
         ax2.legend(loc = "upper left", fontsize = 10)
             
 fig2.tight_layout()
-fig2.savefig('./vCNN/Topologies/Next/'+caseID+'_'+model_top+'.png')
+fig2.savefig('./vCNN/Topologies/'+caseID+'_'+model_top+'.png')

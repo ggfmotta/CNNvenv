@@ -8,8 +8,9 @@ logs/
 Model/
 SavedModels/
 Testing/
-Topologies/Test
-Topologies/Train
+Topologies/Next/
+Topologies/Test/
+Topologies/Train/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

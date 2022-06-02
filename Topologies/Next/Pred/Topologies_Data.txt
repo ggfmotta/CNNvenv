@@ -31,3 +31,4 @@ Base subset: AM5C12	Topology: _T2_	Pred subset: AM8C12	Mean_error: 24.7	Max_erro
 Base subset: AM5C12	Topology: _T2_	Pred subset: AM5C34	Mean_error: 27.8	Max_error: 55.5	Standard Deviation: 11.4
 Base subset: AM5C12	Topology: _T2_	Pred subset: AM5	Mean_error: 13.4	Max_error: 55.5	Standard Deviation: 15.6
 Base subset: AM5C34	Topology: _T2_	Pred subset: AM8C12	Mean_error: 9.42	Max_error: 31.8	Standard Deviation: 6.64
+Base subset: AM8C34	Topology: _T2_	Pred subset: AM8C34	Mean_error: 17.7	Max_error: 406	Standard Deviation: 23.4

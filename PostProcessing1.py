@@ -152,7 +152,7 @@ fig3.tight_layout()
 fig3.savefig('./vCNN/Topologies/'+caseID+'_ErrorPerKeq.png')
 
 # switch batch and subsets
-groups = ['Am5_c34', 'Am8_c12', 'Am8_c34'] # remaining groups
+groups = ['Am5_c34_Topology 2a', 'Am8_c12_Topology 2', 'Am8_c34_Topology 2'] # remaining groups
 fig4, ax4 = plt.subplots(1, len(groups), sharex=False, sharey=False, figsize = (10,5))
 for i in range(0, len(groups)):
     # Read from CSV of Model Topology
@@ -160,10 +160,11 @@ for i in range(0, len(groups)):
     # define Topology
     model_top = 'Topology 2' # best Topology
     # read test csv
-    TopologyFilename = './vCNN/Topologies/Train/'+caseID+'_'+model_top+'.csv'
+    TopologyFilename = './vCNN/Topologies/Train/'+caseID+'.csv'
     if os.path.exists(TopologyFilename):
         # convert csv to df
         TopologyDataframe = pd.read_csv(TopologyFilename,sep=';')
+        
         # export to txt
         mode = 'a'
         mean = np.mean(TopologyDataframe['Error (%)'])
@@ -176,8 +177,13 @@ for i in range(0, len(groups)):
         f.write('Max_error: %.3g\t' % max)
         f.write('Standard Deviation: %.3g\n' % std)
         f.close()
+        
         # data visualization
-        ax4[i].set_title(label = groups[i] + ' Performance', fontsize = 14)
+        if i == 0:
+            titulo = 'Am5_c34_Topology 2'
+        else:
+            titulo = groups[i]
+        ax4[i].set_title(label = titulo + ' Performance', fontsize = 10)
         ax4[i].scatter(TopologyDataframe['Keq/Kpm_teo'],
                         TopologyDataframe['Keq/Kpm_est'], 
                         color='mediumpurple', marker='.', label = 'Train Data')
@@ -187,10 +193,11 @@ for i in range(0, len(groups)):
     else:
         break
         # read test csv
-    TestTopologyFilename = './vCNN/Topologies/Test/'+caseID+'_'+model_top+'.csv'
+    TestTopologyFilename = './vCNN/Topologies/Test/'+caseID+'.csv'
     if os.path.exists(TestTopologyFilename):
         # convert csv to df
         TestTopologyDataframe = pd.read_csv(TestTopologyFilename,sep=';')
+        
         # export to txt
         mode = 'a'
         mean = np.mean(TestTopologyDataframe['Error (%)'])
@@ -203,11 +210,12 @@ for i in range(0, len(groups)):
         f.write('Max_error: %.4g\t' % max)
         f.write('Standard Deviation: %.4g\n' % std)
         f.close()
+        
         ax4[i].scatter(TestTopologyDataframe['Keq/Kpm_teo'],
                         TestTopologyDataframe['Keq/Kpm_est'], 
                         color='lightgreen', marker='x', label = 'Test Data')
         ax4[i].legend(loc = "best", fontsize = 12)
-        ax4[i].set_xlabel('Theoretical Perm. (-)', fontsize = 14)
-        ax4[i].set_ylabel('Estimated Perm. (-)', fontsize = 14)
+        ax4[i].set_xlabel('Theoretical Perm. (-)', fontsize = 10)
+        ax4[i].set_ylabel('Estimated Perm. (-)', fontsize = 10)
 fig4.tight_layout()
 fig4.savefig('./vCNN/Topologies/Topology 2_Results.png')
