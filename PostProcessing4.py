@@ -37,7 +37,7 @@ ax[0,1].set_xlabel(xlabel = 'Theoretical Perm. (-)', fontsize = 10)
 #ax[0,0].set_xlim([1.00, 2.5])
 #ax[0].set_ylim([1.00, 2.5])
 ax[1,0].scatter(TestDataframe['Keq/Kpm_teo'],TestDataframe['Error (%)'], 
-                                        color = 'lightsalmon', label = 'Am8_c34 Test Data')
+                                        color = 'lightsalmon', label = 'Am5_c12 Test Data')
 ax[1,0].axhline(y = TestDataframe['Error (%)'].mean(), color = 'orangered', linestyle = '--', label = 'Mean')
 ax[1,0].set_xlabel(xlabel = 'Theoretical Perm. (-)', fontsize = 10)
 ax[1,0].set_ylabel(ylabel = 'Error (%)', fontsize = 10)
