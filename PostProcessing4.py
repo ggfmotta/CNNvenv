@@ -7,22 +7,22 @@ import seaborn as sns
 import matplotlib.ticker as ticker
 
 # Inport csv
-modelName = 'Am8_c34_Topology 2c'
-TestDataframe = pd.read_csv('./vCNN/Topologies/Next/Test/'+modelName+'.csv',sep=';')
-TrainDataframe = pd.read_csv('./vCNN/Topologies/Next/Train/'+modelName+'.csv',sep=';')
-base = 'AM8C34' # remind to update
+modelName = 'Am5_c12_Topology 2'
+TestDataframe = pd.read_csv('./vCNN/Topologies/Test/'+modelName+'.csv',sep=';')
+TrainDataframe = pd.read_csv('./vCNN/Topologies/Train/'+modelName+'.csv',sep=';')
+base = 'AM5C12' # remind to update
 top = '_T2_'
-pred = 'AM5C34' # remind to update
+pred = 'AM5C34b' # remind to update
 TopologyDataframe = pd.read_csv('./vCNN/Topologies/Next/Pred/'+base+top+pred+'.csv',sep=';')
 
 # Data Analysis
 fig, ax = plt.subplots(nrows = 2, ncols = 2, sharex=False, sharey=False, figsize = (10,8))
 ax[0,0].scatter(TrainDataframe['Keq/Kpm_teo'],
-                    TrainDataframe['Keq/Kpm_est'], color='mediumpurple', marker='x', label = 'Am8_c34 Train Data')
+                    TrainDataframe['Keq/Kpm_est'], color='mediumpurple', marker='x', label = 'Am5_c12 Train Data')
 ax[0,0].plot(TrainDataframe['Keq/Kpm_teo'],
                         TrainDataframe['Keq/Kpm_teo'], color='indigo', linewidth=2.0)
 ax[0,0].scatter(TestDataframe['Keq/Kpm_teo'],
-                    TestDataframe['Keq/Kpm_est'], color='lightgreen', marker='x', label = 'Am8_c34 Test Data')
+                    TestDataframe['Keq/Kpm_est'], color='lightgreen', marker='x', label = 'Am5_c12 Test Data')
 ax[0,0].legend(loc = "upper left", fontsize = 10)                        
 ax[0,0].set_ylabel(ylabel = 'Estimated Perm. (-)', fontsize = 10)
 ax[0,0].set_xlabel(xlabel = 'Theoretical Perm. (-)', fontsize = 10)
